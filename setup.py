@@ -97,8 +97,6 @@ def ext_modules():
     if java_home is None:
         raise Exception("JVM not found")
     jdk_home = find_jdk()
-    from numpy import get_include
-    include_dirs = [get_include()] + get_jvm_include_dirs()
     libraries = None
     library_dirs = None
     javabridge_sources = ['_javabridge.c']
@@ -146,7 +144,6 @@ def ext_modules():
         sources=javabridge_sources,
         libraries=libraries,
         library_dirs=library_dirs,
-        include_dirs=include_dirs,
         extra_link_args=extra_link_args)
     if not is_win:
         extension_kwargs["runtime_library_dirs"] =library_dirs
@@ -178,14 +175,11 @@ class build_ext(_build_ext):
     java2cpython_sources = ["java/org_cellprofiler_javabridge_CPython.c"]
 
     def initialize_options(self):
-        from numpy import get_include
         _build_ext.initialize_options(self)
-        if self.include_dirs is None:
-            self.include_dirs = get_include()
-        else:
-            self.include_dirs += get_include()
 
     def run(self, *args, **kwargs):
+        from numpy import get_include
+        self.include_dirs += ([get_include()] + get_jvm_include_dirs())
         self.build_java()
         result = build_cython()
         if self.inplace:
@@ -389,6 +383,7 @@ interact with the JVM using a low-level API or a more convenient
 high-level API. Python-javabridge was developed for and is used by the
 cell image analysis software CellProfiler (cellprofiler.org).''',
           url="http://github.com/CellProfiler/python-javabridge/",
+          cmdclass={'build_ext': build_ext},
           packages=['javabridge', 'javabridge.tests'],
           classifiers=['Development Status :: 5 - Production/Stable',
                        'License :: OSI Approved :: BSD License',
@@ -409,7 +404,6 @@ cell image analysis software CellProfiler (cellprofiler.org).''',
                 'javabridge = javabridge.noseplugin:JavabridgePlugin'
                 ]},
           test_suite="nose.collector",
-          ext_modules=ext_modules(),
           package_data={"javabridge": [
               'jars/*.jar', 'jars/*%s' % SO, 'VERSION']},
-          cmdclass={'build_ext': build_ext})
+          ext_modules=ext_modules())
