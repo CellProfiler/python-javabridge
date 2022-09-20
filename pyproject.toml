@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name="python-javabridge"
+version="4.0.3"
+readme = "README.rst"
+requires-python = ">=3.8"
+description="Python wrapper for the Java Native Interface"
+classifiers=['Development Status :: 5 - Production/Stable',
+             'License :: OSI Approved :: BSD License',
+             'Programming Language :: Java',
+             'Programming Language :: Python :: 2',
+             'Programming Language :: Python :: 3'
+             ]
+dependencies = ['Cython>=0.29.16', 'numpy>=1.20.1' ]
+license={text = "BSD 3-Clause License"}
