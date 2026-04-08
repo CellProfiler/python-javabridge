@@ -338,7 +338,7 @@ class TestJavabridge(unittest.TestCase):
         result = self.env.call_method(jstring, method_id)
         self.assertTrue(isinstance(result, jb.JB_Object))
         a = self.env.get_byte_array_elements(result)
-        self.assertEqual(np.array(s, "S%d" % len(s)).tostring(), a.tostring())
+        self.assertEqual(np.array(s, "S%d" % len(s)).tobytes(), a.tobytes())
     
     def test_03_10_call_method_object(self):
         hello = self.env.new_string_utf("Hello, ")
