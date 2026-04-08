@@ -1191,7 +1191,7 @@ def get_nice_arg(arg, sig):
     
     if isinstance(arg, np.ndarray):
         if sig == '[Z':
-            return env.make_boolean_array(np.ascontiguousarray(arg.flatten(), np.bool8))
+            return env.make_boolean_array(np.ascontiguousarray(arg.flatten(), np.bool_))
         elif sig == '[B':
             return env.make_byte_array(np.ascontiguousarray(arg.flatten(), np.uint8))
         elif sig == '[S':

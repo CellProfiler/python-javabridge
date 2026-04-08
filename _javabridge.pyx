@@ -1722,7 +1722,7 @@ cdef class JB_Env:
         result = np.zeros(shape=(alen,),dtype=np.uint8)
         data = result.data
         self.env[0].GetBooleanArrayRegion(self.env, array.o, 0, alen, <jboolean *>data)
-        return result.astype(np.bool8)
+        return result.astype(np.bool_)
         
     def get_byte_array_elements(self, JB_Object array):
         '''Return the contents of a Java byte array as a numpy array
@@ -1841,7 +1841,7 @@ cdef class JB_Env:
     def make_boolean_array(self, array):
         '''Create a java boolean [] array from the contents of a numpy array'''
         cdef:
-            np.ndarray[dtype=np.uint8_t, ndim=1, negative_indices=False, mode='c'] barray = array.astype(np.bool8).astype(np.uint8)
+            np.ndarray[dtype=np.uint8_t, ndim=1, negative_indices=False, mode='c'] barray = array.astype(np.bool_).astype(np.uint8)
             jobject o
             jsize alen = barray.shape[0]
             jboolean *data = <jboolean *>(barray.data)
